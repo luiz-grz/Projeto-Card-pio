@@ -1,0 +1,61 @@
+* { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+:root {
+    --primary: #ff4d00;
+    --bg: #0a0a0a;
+    --card: #181818;
+    --text: #ffffff;
+    --gray: #888;
+}
+
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+/* Screens */
+.screen { display: none; min-height: 100vh; width: 100%; flex-direction: column; }
+.active { display: flex !important; }
+
+/* Login */
+#login-screen { justify-content: center; align-items: center; background: radial-gradient(circle, #222 0%, #000 100%); }
+.login-card { text-align: center; padding: 40px; border-radius: 24px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); width: 90%; max-width: 400px; }
+.logo { font-size: 3rem; font-weight: 800; color: var(--primary); margin-bottom: 10px; }
+.login-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
+
+/* Buttons */
+button { cursor: pointer; border-radius: 12px; border: none; font-weight: 600; transition: 0.3s; }
+.btn-primary { background: var(--primary); color: white; padding: 16px; font-size: 1rem; }
+.btn-outline { background: transparent; border: 1px solid var(--gray); color: white; padding: 16px; }
+.logout-mini { background: #222; color: white; padding: 5px 15px; font-size: 0.8rem; }
+
+/* App Client Components */
+.banner { margin: 0 20px; height: 160px; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=600&q=80') center; background-size: cover; border-radius: 20px; display: flex; align-items: flex-end; padding: 20px; }
+.cat-nav { display: flex; gap: 10px; padding: 20px; overflow-x: auto; }
+.cat-nav button { background: var(--card); color: var(--gray); padding: 8px 20px; white-space: nowrap; }
+.cat-nav button.active { background: var(--primary); color: white; }
+
+/* Grid */
+.grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 0 20px 100px; }
+.item-card { background: var(--card); border-radius: 15px; padding: 12px; border: 1px solid #222; }
+.item-img { width: 100%; height: 110px; background: #333; border-radius: 10px; margin-bottom: 10px; }
+.price { color: var(--primary); font-weight: 700; }
+
+/* Modal */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
+.modal-content { background: var(--card); width: 90%; max-width: 500px; border-radius: 25px; padding: 30px; position: relative; }
+.close-modal { position: absolute; top: 20px; right: 20px; background: none; color: white; font-size: 2rem; }
+#modal-obs { width: 100%; height: 80px; background: #222; border: 1px solid #333; border-radius: 12px; color: white; padding: 10px; margin: 15px 0; }
+
+/* Cart */
+.cart-container { padding: 20px; }
+.cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
+.qty-controls { display: flex; align-items: center; gap: 12px; }
+.btn-qty { width: 30px; height: 30px; background: #333; color: white; border-radius: 5px; }
+.cart-total-footer { position: fixed; bottom: 0; width: 100%; background: #111; padding: 20px; border-top: 1px solid #222; }
+
+/* Admin */
+.admin-layout { flex-direction: row; }
+.sidebar { width: 250px; background: #000; border-right: 1px solid #222; padding: 30px; }
+.admin-main { flex: 1; padding: 40px; background: #050505; }
+.order-card { background: var(--card); padding: 20px; border-radius: 15px; margin-bottom: 15px; border-left: 5px solid var(--primary); }
+
+/* Tab Bar */
+.tab-bar { position: fixed; bottom: 0; width: 100%; height: 70px; background: #111; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; }
+.cart-btn { background: var(--primary); width: 55px; height: 55px; border-radius: 50%; margin-top: -40px; display: flex; align-items: center; justify-content: center; border: 5px solid var(--bg); cursor: pointer; }

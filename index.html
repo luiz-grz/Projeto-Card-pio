@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Braza | Premium Steakhouse</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="login-screen" class="screen active">
+        <div class="login-card">
+            <div class="logo">🔥 BRAZA</div>
+            <h1>Bem-vindo ao Churrasco Premium</h1>
+            <p>Selecione seu perfil de acesso</p>
+            <div class="login-buttons">
+                <button class="btn-primary" onclick="changeScreen('client-app')">Sou Cliente</button>
+                <button class="btn-outline" onclick="changeScreen('admin-app')">Sou Restaurante</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="client-app" class="screen">
+        <header class="app-header">
+            <span>Olá, <strong>Visitante</strong></span>
+            <button class="logout-mini" onclick="changeScreen('login-screen')">Sair</button>
+        </header>
+
+        <div class="banner">
+            <div class="banner-content">
+                <h2>Picanha Nobre</h2>
+                <p>A melhor escolha para hoje</p>
+            </div>
+        </div>
+
+        <nav class="cat-nav">
+            <button class="active">Todos</button>
+            <button>Cortes</button>
+            <button>Bebidas</button>
+        </nav>
+
+        <main class="grid-container" id="menu-grid"></main>
+
+        <div class="tab-bar">
+            <div class="tab-item active">🏠</div>
+            <div class="tab-item">🔍</div>
+            <div class="cart-btn">🛒</div>
+            <div class="tab-item">📋</div>
+            <div class="tab-item">👤</div>
+        </div>
+    </div>
+
+    <div id="admin-app" class="screen admin-layout">
+        <aside class="sidebar">
+            <div class="logo-s">BRAZA ADMIN</div>
+            <nav class="side-nav">
+                <button onclick="showTab('pedidos')">Pedidos</button>
+                <button onclick="showTab('estoque')">Estoque</button>
+                <button onclick="changeScreen('login-screen')" class="btn-exit">Sair</button>
+            </nav>
+        </aside>
+        <section class="admin-main">
+            <div id="pedidos" class="admin-tab">
+                <h2>Pedidos em Aberto</h2>
+                <div id="orders-container"></div>
+            </div>
+            <div id="estoque" class="admin-tab" style="display:none">
+                <h2>Controle de Estoque</h2>
+                <div id="stock-container"></div>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
