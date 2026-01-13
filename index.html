@@ -3,103 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Braza | Premium Steakhouse</title>
+    <title>SteakHouse Premium | Menu</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="login-screen" class="screen active">
-        <div class="login-card">
-            <div class="logo">🔥 BRAZA</div>
-            <h1>Bem-vindo ao Churrasco Premium</h1>
-            <p>Selecione seu perfil de acesso</p>
-            <div class="login-buttons">
-                <button class="btn-primary" onclick="changeScreen('client-app')">Sou Cliente</button>
-                <button class="btn-outline" onclick="changeScreen('admin-app')">Sou Restaurante</button>
+    <div class="bg-glow"></div>
+
+    <section id="login-screen" class="screen active-screen fade-in">
+        <div class="glass-card login-wrapper">
+            <div class="brand-logo">
+                <i class="ri-fire-fill"></i>
+                <h1 id="brand-name-display">BRAZA</h1>
+            </div>
+            <p class="subtitle">A arte do churrasco em sua mesa.</p>
+            <div class="login-actions">
+                <button class="btn-primary" onclick="navigateTo('client-app')">
+                    <i class="ri-user-3-line"></i> Abrir Cardápio
+                </button>
+                <button class="btn-secondary" onclick="navigateTo('admin-app')">
+                    <i class="ri-dashboard-line"></i> Área Restrita
+                </button>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div id="client-app" class="screen">
-        <header class="app-header">
-            <span>Olá, <strong>Visitante</strong></span>
-            <button class="logout-mini" onclick="changeScreen('login-screen')">Sair</button>
+    <section id="client-app" class="screen fade-in">
+        <header class="app-top">
+            <div class="user-welcome">
+                <small>Bem-vindo,</small>
+                <strong>Cliente VIP</strong>
+            </div>
+            <button class="icon-btn" onclick="navigateTo('cart-screen')">
+                <i class="ri-shopping-bag-3-fill"></i>
+                <span class="badge" id="cart-count">0</span>
+            </button>
         </header>
 
-        <div class="banner">
-            <div class="banner-content">
-                <h2>Picanha Nobre</h2>
-                <p>O corte perfeito para o seu dia</p>
+        <div class="chef-recommendations">
+            <h3 class="section-title">🏆 Escolhas do Chef</h3>
+            <div class="hero-scroll">
+                <div class="hero-card">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Tomahawk">
+                    <div class="hero-info">
+                        <span>Carne Nobre</span>
+                        <h3>Tomahawk Gold</h3>
+                        <p>R$ 189,90</p>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=600" alt="Costela">
+                    <div class="hero-info">
+                        <span>Defumado</span>
+                        <h3>Costela 12 Horas</h3>
+                        <p>R$ 89,90</p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <nav class="cat-nav">
-            <button class="active">Todos</button>
-            <button>Cortes</button>
-            <button>Acompanhamentos</button>
-            <button>Bebidas</button>
+        <div class="category-scroll">
+            <button class="cat-btn active" onclick="filterItems('todos')">🔥 Todos</button>
+            <button class="cat-btn" onclick="filterItems('cortes')">🥩 Cortes</button>
+            <button class="cat-btn" onclick="filterItems('burgers')">🍔 Burgers</button>
+            <button class="cat-btn" onclick="filterItems('acompanhamentos')">🍟 Acomp.</button>
+            <button class="cat-btn" onclick="filterItems('sobremesas')">🍰 Doces</button>
+            <button class="cat-btn" onclick="filterItems('bebidas')">🍺 Bebidas</button>
+        </div>
+
+        <main id="menu-grid" class="products-grid"></main>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="navigateTo('client-app')">
+                <i class="ri-home-5-line"></i>
+            </button>
+            <button class="nav-item" onclick="navigateTo('cart-screen')">
+                <div class="nav-cart-wrapper">
+                    <i class="ri-shopping-basket-2-fill"></i>
+                </div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('login-screen')">
+                <i class="ri-logout-box-r-line"></i>
+            </button>
         </nav>
+    </section>
 
-        <main class="grid-container" id="menu-grid"></main>
-
-        <div class="tab-bar">
-            <div class="tab-item active" onclick="changeScreen('client-app')">🏠</div>
-            <div class="tab-item">🔍</div>
-            <div class="cart-btn" onclick="changeScreen('cart-screen')">🛒</div>
-            <div class="tab-item">📋</div>
-            <div class="tab-item">👤</div>
-        </div>
-    </div>
-
-    <div id="cart-screen" class="screen">
-        <header class="app-header">
-            <button class="logout-mini" onclick="changeScreen('client-app')">← Voltar</button>
-            <h2>Meu Pedido</h2>
+    <section id="cart-screen" class="screen fade-in">
+        <header class="app-top">
+            <button class="icon-btn" onclick="navigateTo('client-app')"><i class="ri-arrow-left-s-line"></i></button>
+            <h2>Seu Pedido</h2>
+            <div style="width: 40px;"></div>
         </header>
-        <main class="cart-container" id="cart-items-list">
-            </main>
-        <div class="cart-total-footer">
-            <div class="total-info">
-                <span>Total:</span>
-                <span id="cart-total-value">R$ 0,00</span>
+        <div id="cart-items-container" class="cart-list"></div>
+        <div class="cart-footer glass-panel">
+            <div class="total-row">
+                <span>Total</span>
+                <strong id="cart-total-display">R$ 0,00</strong>
             </div>
-            <button class="btn-primary" style="width: 100%;" onclick="checkout()">Finalizar Pedido</button>
+            <button class="btn-primary" onclick="checkout()">Finalizar Pedido <i class="ri-whatsapp-line"></i></button>
         </div>
-    </div>
+    </section>
 
     <div id="product-modal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeModal()">&times;</button>
-            <div id="modal-body"></div>
-            <div class="modal-footer">
+        <div class="modal-content glass-card">
+            <button class="close-modal" onclick="closeModal()"><i class="ri-close-line"></i></button>
+            <img id="modal-img" src="" alt="">
+            <div class="modal-info">
+                <div class="modal-header">
+                    <h2 id="modal-title"></h2>
+                    <span class="price-tag" id="modal-price"></span>
+                </div>
+                <p id="modal-desc"></p>
                 <label>Observações:</label>
-                <textarea id="modal-obs" placeholder="Ex: Ponto da carne, remover ingrediente..."></textarea>
-                <button class="btn-primary" id="add-to-cart-btn" style="width: 100%;">Adicionar ao Carrinho</button>
+                <textarea id="modal-obs" placeholder="Ex: Ao ponto, sem cebola..."></textarea>
+                <button class="btn-primary" id="btn-add-modal">Adicionar à Sacola</button>
             </div>
         </div>
     </div>
 
-    <div id="admin-app" class="screen admin-layout">
-        <aside class="sidebar">
-            <div class="logo-s">BRAZA ADMIN</div>
-            <nav class="side-nav">
-                <button onclick="showTab('pedidos')">Pedidos</button>
-                <button onclick="showTab('estoque')">Estoque</button>
-                <button onclick="changeScreen('login-screen')" class="btn-exit">Sair</button>
+    <section id="admin-app" class="screen fade-in admin-layout">
+        <aside class="sidebar glass-panel">
+            <div class="brand-logo sm">ADMIN</div>
+            <nav class="sidebar-nav">
+                <button onclick="showAdminTab('pedidos')" class="active"><i class="ri-file-list-3-line"></i> Pedidos</button>
+                <button onclick="showAdminTab('estoque')"><i class="ri-archive-line"></i> Estoque</button>
+                <button onclick="showAdminTab('pratos')"><i class="ri-restaurant-line"></i> Pratos</button>
+                <button onclick="showAdminTab('config')"><i class="ri-settings-4-line"></i> Config</button>
             </nav>
+            <button class="btn-logout" onclick="navigateTo('login-screen')">Sair</button>
         </aside>
-        <section class="admin-main">
-            <div id="pedidos" class="admin-tab">
-                <h2>Cozinha - Pedidos Ativos</h2>
-                <div id="orders-container"></div>
+        
+        <main class="admin-content">
+            <div id="tab-pedidos" class="admin-tab">
+                <header><h2>Cozinha em Tempo Real</h2></header>
+                <div id="admin-orders-grid" class="orders-grid"></div>
             </div>
-            <div id="estoque" class="admin-tab" style="display:none">
-                <h2>Controle de Insumos</h2>
-                <div id="stock-container"></div>
+
+            <div id="tab-estoque" class="admin-tab" style="display:none;">
+                <header><h2>Gestão de Estoque</h2></header>
+                <div class="admin-form-card glass-card">
+                    <input type="text" id="stock-name" placeholder="Item (ex: Carvão)">
+                    <input type="number" id="stock-qty" placeholder="Qtd">
+                    <input type="text" id="stock-unit" placeholder="Unidade (kg, un)">
+                    <button class="btn-primary" onclick="addStock()">Adicionar</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Item</th><th>Qtd</th><th>Ação</th></tr></thead>
+                        <tbody id="stock-table-body"></tbody>
+                    </table>
+                </div>
             </div>
-        </section>
-    </div>
+
+            <div id="tab-pratos" class="admin-tab" style="display:none;">
+                <header><h2>Gerenciar Cardápio</h2></header>
+                <div class="admin-form-card glass-card">
+                    <input type="text" id="new-prod-name" placeholder="Nome do Prato">
+                    <input type="number" id="new-prod-price" placeholder="Preço (R$)">
+                    <select id="new-prod-cat">
+                        <option value="cortes">Cortes</option>
+                        <option value="burgers">Burgers</option>
+                        <option value="bebidas">Bebidas</option>
+                        <option value="sobremesas">Sobremesas</option>
+                    </select>
+                    <input type="text" id="new-prod-img" placeholder="URL da Imagem">
+                    <button class="btn-primary" onclick="addNewProduct()">Cadastrar Prato</button>
+                </div>
+                <div id="admin-products-list" class="simple-list"></div>
+            </div>
+
+            <div id="tab-config" class="admin-tab" style="display:none;">
+                <header><h2>Configurações</h2></header>
+                <div class="glass-card" style="padding: 20px;">
+                    <label>Nome do Restaurante</label>
+                    <input type="text" id="config-name" value="BRAZA" class="full-input">
+                    <label>Taxa de Serviço (%)</label>
+                    <input type="number" id="config-tax" value="10" class="full-input">
+                    <button class="btn-primary" style="margin-top: 15px;" onclick="saveConfig()">Salvar Alterações</button>
+                </div>
+            </div>
+        </main>
+    </section>
 
     <script src="script.js"></script>
 </body>
