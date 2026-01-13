@@ -30,24 +30,53 @@
         <div class="banner">
             <div class="banner-content">
                 <h2>Picanha Nobre</h2>
-                <p>A melhor escolha para hoje</p>
+                <p>O corte perfeito para o seu dia</p>
             </div>
         </div>
 
         <nav class="cat-nav">
             <button class="active">Todos</button>
             <button>Cortes</button>
+            <button>Acompanhamentos</button>
             <button>Bebidas</button>
         </nav>
 
         <main class="grid-container" id="menu-grid"></main>
 
         <div class="tab-bar">
-            <div class="tab-item active">🏠</div>
+            <div class="tab-item active" onclick="changeScreen('client-app')">🏠</div>
             <div class="tab-item">🔍</div>
-            <div class="cart-btn">🛒</div>
+            <div class="cart-btn" onclick="changeScreen('cart-screen')">🛒</div>
             <div class="tab-item">📋</div>
             <div class="tab-item">👤</div>
+        </div>
+    </div>
+
+    <div id="cart-screen" class="screen">
+        <header class="app-header">
+            <button class="logout-mini" onclick="changeScreen('client-app')">← Voltar</button>
+            <h2>Meu Pedido</h2>
+        </header>
+        <main class="cart-container" id="cart-items-list">
+            </main>
+        <div class="cart-total-footer">
+            <div class="total-info">
+                <span>Total:</span>
+                <span id="cart-total-value">R$ 0,00</span>
+            </div>
+            <button class="btn-primary" style="width: 100%;" onclick="checkout()">Finalizar Pedido</button>
+        </div>
+    </div>
+
+    <div id="product-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div id="modal-body"></div>
+            <div class="modal-footer">
+                <label>Observações:</label>
+                <textarea id="modal-obs" placeholder="Ex: Ponto da carne, remover ingrediente..."></textarea>
+                <button class="btn-primary" id="add-to-cart-btn" style="width: 100%;">Adicionar ao Carrinho</button>
+            </div>
         </div>
     </div>
 
@@ -62,11 +91,11 @@
         </aside>
         <section class="admin-main">
             <div id="pedidos" class="admin-tab">
-                <h2>Pedidos em Aberto</h2>
+                <h2>Cozinha - Pedidos Ativos</h2>
                 <div id="orders-container"></div>
             </div>
             <div id="estoque" class="admin-tab" style="display:none">
-                <h2>Controle de Estoque</h2>
+                <h2>Controle de Insumos</h2>
                 <div id="stock-container"></div>
             </div>
         </section>
