@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SteakHouse Premium | Menu</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        /* Estilo extra para alerta de estoque */
+        .ri-alert-line { color: #ff6b6b; margin-left: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+
+    <div class="bg-glow"></div>
+
+    <section id="login-screen" class="screen active-screen fade-in">
+        <div class="glass-card login-wrapper">
+            <div class="brand-logo">
+                <i class="ri-fire-fill"></i>
+                <h1 id="brand-name-display">BRAZA</h1>
+            </div>
+            <p class="subtitle">A arte do churrasco em sua mesa.</p>
+            <div class="login-actions">
+                <button class="btn-primary" onclick="navigateTo('client-app')">
+                    <i class="ri-user-3-line"></i> Abrir Cardápio
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="client-app" class="screen fade-in">
+        <header class="app-top">
+            <div class="user-welcome">
+                <small>Bem-vindo,</small>
+                <strong>Cliente VIP</strong>
+            </div>
+            
+            <!-- Navegação Desktop -->
+            <nav class="desktop-nav" style="display: none; margin-left: auto;">
+                <span class="desktop-link" onclick="navigateTo('client-app')">Início</span>
+                <span class="desktop-link" onclick="navigateTo('cart-screen')">Meus Pedidos</span>
+                <span class="desktop-link" onclick="navigateTo('login-screen')">Sair</span>
+            </nav>
+
+            <button class="icon-btn" onclick="navigateTo('cart-screen')">
+                <i class="ri-shopping-bag-3-fill"></i>
+                <span class="badge" id="cart-count">0</span>
+            </button>
+        </header>
+
+        <div class="chef-recommendations">
+            <h3 class="section-title">🏆 Escolhas do Chef</h3>
+            <div class="hero-scroll">
+                <div class="hero-card">
+                    <img src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=600" alt="Tomahawk">
+                    <div class="hero-info">
+                        <span>Carne Nobre</span>
+                        <h3>Tomahawk Gold</h3>
+                        <p>R$ 189,90</p>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=600" alt="Costela">
+                    <div class="hero-info">
+                        <span>Defumado</span>
+                        <h3>Costela 12 Horas</h3>
+                        <p>R$ 89,90</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="O que você procura hoje?" oninput="searchMenu(this.value)">
+            </div>
+        </div>
+
+        <div class="category-scroll">
+            <button class="cat-btn active" onclick="filterItems('todos')">🔥 Todos</button>
+            <button class="cat-btn" onclick="filterItems('cortes')">🥩 Cortes</button>
+            <button class="cat-btn" onclick="filterItems('burgers')">🍔 Burgers</button>
+            <button class="cat-btn" onclick="filterItems('acompanhamentos')">🍟 Acomp.</button>
+            <button class="cat-btn" onclick="filterItems('sobremesas')">🍰 Doces</button>
+            <button class="cat-btn" onclick="filterItems('bebidas')">🍺 Bebidas</button>
+        </div>
+
+        <main id="menu-grid" class="products-grid"></main>
+
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="navigateTo('client-app')">
+                <i class="ri-home-5-line"></i>
+            </button>
+            <button class="nav-item" onclick="navigateTo('cart-screen')">
+                <div class="nav-cart-wrapper">
+                    <i class="ri-shopping-basket-2-fill"></i>
+                </div>
+            </button>
+            <button class="nav-item" onclick="navigateTo('login-screen')">
+                <i class="ri-logout-box-r-line"></i>
+            </button>
+        </nav>
+    </section>
+
+    <section id="cart-screen" class="screen fade-in">
+        <header class="app-top">
+            <button class="icon-btn" onclick="navigateTo('client-app')"><i class="ri-arrow-left-s-line"></i></button>
+            <h2>Seu Pedido</h2>
+            <div style="width: 40px;"></div>
+        </header>
+        <div id="cart-items-container" class="cart-list"></div>
+        <div class="cart-footer glass-panel">
+            <div class="total-row">
+                <span>Total</span>
+                <strong id="cart-total-display">R$ 0,00</strong>
+            </div>
+            <button class="btn-primary" onclick="checkout()">Finalizar Pedido <i class="ri-whatsapp-line"></i></button>
+        </div>
+    </section>
+
+    <div id="product-modal" class="modal-overlay">
+        <div class="modal-content glass-card">
+            <button class="close-modal" onclick="closeModal()"><i class="ri-close-line"></i></button>
+            <img id="modal-img" src="" alt="">
+            <div class="modal-info">
+                <div class="modal-header">
+                    <h2 id="modal-title"></h2>
+                    <span class="price-tag" id="modal-price"></span>
+                </div>
+                <p id="modal-desc"></p>
+                <label>Personalizar / Remover Ingredientes:</label>
+                <div id="modal-tags" class="tags-container" style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px;"></div>
+                <textarea id="modal-obs" placeholder="Ex: Sem cebola, sem bacon, ponto bem passado..."></textarea>
+                <div class="modal-qty-selector">
+                    <span class="qty-btn" onclick="updateModalQty(-1)">-</span>
+                    <span id="modal-qty-display">1</span>
+                    <span class="qty-btn" onclick="updateModalQty(1)">+</span>
+                </div>
+                <button class="btn-primary" id="btn-add-modal">Adicionar à Sacola</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
