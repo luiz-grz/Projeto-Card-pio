@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SteakHouse Premium | Cozinha</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <style>
+        .ri-alert-line { color: #ff6b6b; margin-left: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+
+    <div class="bg-glow"></div>
+
+    <!-- Tela de Login da Cozinha -->
+    <section id="login-screen" class="screen active-screen fade-in">
+        <div class="glass-card login-wrapper">
+            <div class="brand-logo">
+                <i class="ri-fire-fill"></i>
+                <h1>COZINHA</h1>
+            </div>
+            <p class="subtitle">Acesso Restrito à Equipe</p>
+            <input type="password" id="admin-pass" class="login-input" placeholder="Digite a senha de acesso">
+            <div class="login-actions">
+                <button class="btn-primary" onclick="attemptLogin()">
+                    <i class="ri-lock-line"></i> Acessar Painel
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section id="admin-app" class="screen fade-in admin-layout">
+        <aside class="sidebar glass-panel">
+            <div class="brand-logo sm">ADMIN</div>
+            <nav class="sidebar-nav">
+                <button onclick="showAdminTab('dashboard')"><i class="ri-bar-chart-grouped-line"></i> Resumo</button>
+                <button onclick="showAdminTab('pedidos')" class="active"><i class="ri-file-list-3-line"></i> Pedidos</button>
+                <button onclick="showAdminTab('estoque')"><i class="ri-archive-line"></i> Estoque</button>
+                <button onclick="showAdminTab('pratos')"><i class="ri-restaurant-line"></i> Pratos</button>
+                <button onclick="showAdminTab('config')"><i class="ri-settings-4-line"></i> Config</button>
+            </nav>
+            <button class="btn-logout" onclick="navigateTo('login-screen')">Sair</button>
+        </aside>
+        
+        <main class="admin-content">
+            <div id="tab-dashboard" class="admin-tab" style="display:none;">
+                <header><h2>Resumo do Dia</h2></header>
+                <div class="orders-grid" style="margin-top: 20px;">
+                    <div class="glass-card">
+                        <h3 style="color:var(--text-muted); font-size:0.9rem;">Faturamento</h3>
+                        <strong style="font-size:1.8rem; color:var(--success);" id="dash-revenue">R$ 0,00</strong>
+                    </div>
+                    <div class="glass-card">
+                        <h3 style="color:var(--text-muted); font-size:0.9rem;">Total Pedidos</h3>
+                        <strong style="font-size:1.8rem; color:var(--primary);" id="dash-orders">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-pedidos" class="admin-tab">
+                <header><h2>Cozinha em Tempo Real</h2></header>
+                <div id="admin-orders-grid" class="orders-grid"></div>
+            </div>
+
+            <div id="tab-estoque" class="admin-tab" style="display:none;">
+                <header><h2>Gestão de Estoque</h2></header>
+                <div class="admin-form-card glass-card">
+                    <input type="text" id="stock-name" placeholder="Item (ex: Carvão)">
+                    <input type="number" id="stock-qty" placeholder="Qtd">
+                    <input type="text" id="stock-unit" placeholder="Unidade (kg, un)">
+                    <button class="btn-primary" onclick="addStock()">Adicionar</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead><tr><th>Item</th><th>Qtd</th><th>Ação</th></tr></thead>
+                        <tbody id="stock-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-pratos" class="admin-tab" style="display:none;">
+                <header><h2>Gerenciar Cardápio</h2></header>
+                <div class="admin-form-card glass-card">
+                    <input type="text" id="new-prod-name" placeholder="Nome do Prato">
+                    <input type="number" id="new-prod-price" placeholder="Preço (R$)">
+                    <select id="new-prod-cat">
+                        <option value="cortes">Cortes</option>
+                        <option value="burgers">Burgers</option>
+                        <option value="bebidas">Bebidas</option>
+                        <option value="sobremesas">Sobremesas</option>
+                    </select>
+                    <input type="text" id="new-prod-img" placeholder="URL da Imagem">
+                    <button class="btn-primary" onclick="addNewProduct()">Cadastrar Prato</button>
+                </div>
+                <div id="admin-products-list" class="simple-list"></div>
+            </div>
+
+            <div id="tab-config" class="admin-tab" style="display:none;">
+                <header><h2>Configurações</h2></header>
+                <div class="glass-card" style="padding: 20px;">
+                    <label>Nome do Restaurante</label>
+                    <input type="text" id="config-name" value="BRAZA" class="full-input">
+                    <label>Taxa de Serviço (%)</label>
+                    <input type="number" id="config-tax" value="10" class="full-input">
+                    <button class="btn-primary" style="margin-top: 15px;" onclick="saveConfig()">Salvar Alterações</button>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <!-- Som de Notificação -->
+    <audio id="audio-alert" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Modal Genérico Admin -->
+    <div id="admin-generic-modal" class="modal-overlay">
+        <div class="modal-content glass-card" style="padding: 20px;">
+            <h2 id="admin-modal-title" style="margin-bottom: 15px;">Editar</h2>
+            <input type="text" id="admin-modal-input" class="full-input" style="margin-bottom: 10px;">
+            <div class="modal-footer">
+                <button class="btn-ghost" onclick="closeAdminModal()">Cancelar</button>
+                <button class="btn-primary" id="admin-modal-confirm">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
