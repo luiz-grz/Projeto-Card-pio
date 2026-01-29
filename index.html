@@ -9,6 +9,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <style>
+        /* Estilo extra para alerta de estoque */
+        .ri-alert-line { color: #ff6b6b; margin-left: 5px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
 
     <div class="bg-glow"></div>
 
@@ -23,9 +28,6 @@
                 <button class="btn-primary" onclick="navigateTo('client-app')">
                     <i class="ri-user-3-line"></i> Abrir Cardápio
                 </button>
-                <button class="btn-secondary" onclick="navigateTo('admin-app')">
-                    <i class="ri-dashboard-line"></i> Área Restrita
-                </button>
             </div>
         </div>
     </section>
@@ -36,6 +38,14 @@
                 <small>Bem-vindo,</small>
                 <strong>Cliente VIP</strong>
             </div>
+            
+            <!-- Navegação Desktop -->
+            <nav class="desktop-nav" style="display: none; margin-left: auto;">
+                <span class="desktop-link" onclick="navigateTo('client-app')">Início</span>
+                <span class="desktop-link" onclick="navigateTo('cart-screen')">Meus Pedidos</span>
+                <span class="desktop-link" onclick="navigateTo('login-screen')">Sair</span>
+            </nav>
+
             <button class="icon-btn" onclick="navigateTo('cart-screen')">
                 <i class="ri-shopping-bag-3-fill"></i>
                 <span class="badge" id="cart-count">0</span>
@@ -61,6 +71,13 @@
                         <p>R$ 89,90</p>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="search-container">
+            <div class="search-box">
+                <i class="ri-search-line"></i>
+                <input type="text" placeholder="O que você procura hoje?" oninput="searchMenu(this.value)">
             </div>
         </div>
 
@@ -116,76 +133,21 @@
                     <span class="price-tag" id="modal-price"></span>
                 </div>
                 <p id="modal-desc"></p>
-                <label>Observações:</label>
-                <textarea id="modal-obs" placeholder="Ex: Ao ponto, sem cebola..."></textarea>
+                <label>Personalizar / Remover Ingredientes:</label>
+                <div id="modal-tags" class="tags-container" style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:10px;"></div>
+                <textarea id="modal-obs" placeholder="Ex: Sem cebola, sem bacon, ponto bem passado..."></textarea>
+                <div class="modal-qty-selector">
+                    <span class="qty-btn" onclick="updateModalQty(-1)">-</span>
+                    <span id="modal-qty-display">1</span>
+                    <span class="qty-btn" onclick="updateModalQty(1)">+</span>
+                </div>
                 <button class="btn-primary" id="btn-add-modal">Adicionar à Sacola</button>
             </div>
         </div>
     </div>
 
-    <section id="admin-app" class="screen fade-in admin-layout">
-        <aside class="sidebar glass-panel">
-            <div class="brand-logo sm">ADMIN</div>
-            <nav class="sidebar-nav">
-                <button onclick="showAdminTab('pedidos')" class="active"><i class="ri-file-list-3-line"></i> Pedidos</button>
-                <button onclick="showAdminTab('estoque')"><i class="ri-archive-line"></i> Estoque</button>
-                <button onclick="showAdminTab('pratos')"><i class="ri-restaurant-line"></i> Pratos</button>
-                <button onclick="showAdminTab('config')"><i class="ri-settings-4-line"></i> Config</button>
-            </nav>
-            <button class="btn-logout" onclick="navigateTo('login-screen')">Sair</button>
-        </aside>
-        
-        <main class="admin-content">
-            <div id="tab-pedidos" class="admin-tab">
-                <header><h2>Cozinha em Tempo Real</h2></header>
-                <div id="admin-orders-grid" class="orders-grid"></div>
-            </div>
-
-            <div id="tab-estoque" class="admin-tab" style="display:none;">
-                <header><h2>Gestão de Estoque</h2></header>
-                <div class="admin-form-card glass-card">
-                    <input type="text" id="stock-name" placeholder="Item (ex: Carvão)">
-                    <input type="number" id="stock-qty" placeholder="Qtd">
-                    <input type="text" id="stock-unit" placeholder="Unidade (kg, un)">
-                    <button class="btn-primary" onclick="addStock()">Adicionar</button>
-                </div>
-                <div class="table-responsive">
-                    <table class="admin-table">
-                        <thead><tr><th>Item</th><th>Qtd</th><th>Ação</th></tr></thead>
-                        <tbody id="stock-table-body"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div id="tab-pratos" class="admin-tab" style="display:none;">
-                <header><h2>Gerenciar Cardápio</h2></header>
-                <div class="admin-form-card glass-card">
-                    <input type="text" id="new-prod-name" placeholder="Nome do Prato">
-                    <input type="number" id="new-prod-price" placeholder="Preço (R$)">
-                    <select id="new-prod-cat">
-                        <option value="cortes">Cortes</option>
-                        <option value="burgers">Burgers</option>
-                        <option value="bebidas">Bebidas</option>
-                        <option value="sobremesas">Sobremesas</option>
-                    </select>
-                    <input type="text" id="new-prod-img" placeholder="URL da Imagem">
-                    <button class="btn-primary" onclick="addNewProduct()">Cadastrar Prato</button>
-                </div>
-                <div id="admin-products-list" class="simple-list"></div>
-            </div>
-
-            <div id="tab-config" class="admin-tab" style="display:none;">
-                <header><h2>Configurações</h2></header>
-                <div class="glass-card" style="padding: 20px;">
-                    <label>Nome do Restaurante</label>
-                    <input type="text" id="config-name" value="BRAZA" class="full-input">
-                    <label>Taxa de Serviço (%)</label>
-                    <input type="number" id="config-tax" value="10" class="full-input">
-                    <button class="btn-primary" style="margin-top: 15px;" onclick="saveConfig()">Salvar Alterações</button>
-                </div>
-            </div>
-        </main>
-    </section>
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="script.js"></script>
 </body>
